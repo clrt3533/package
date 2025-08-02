@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # Development service
+  packagepro-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=file:./dev.db
+    networks:
+      - packagepro-network
+    profiles:
+      - dev
+
+  # Production service
+  packagepro-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=file:./prod.db
+    networks:
+      - packagepro-network
+    profiles:
+      - prod
+
+  # PostgreSQL for production (optional)
+  postgres:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: packagepro
+      POSTGRES_PASSWORD: packagepro_password
+      POSTGRES_DB: packagepro_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - packagepro-network
+    profiles:
+      - prod-postgres
+
+  # Redis for caching (optional)
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - packagepro-network
+    profiles:
+      - prod-postgres
+
+networks:
+  packagepro-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
