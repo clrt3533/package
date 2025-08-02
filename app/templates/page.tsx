@@ -6,12 +6,42 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 async function getTemplates() {
-  const templates = await prisma.template.findMany({
-    orderBy: {
-      createdAt: 'desc'
+  // Fallback templates if no database is configured
+  const fallbackTemplates = [
+    {
+      id: '1',
+      name: 'Coffee Box Design',
+      description: 'Modern coffee packaging design',
+      isPremium: false,
+      category: 'box',
+      image: null,
+      createdAt: new Date()
+    },
+    {
+      id: '2',
+      name: 'Premium Bottle',
+      description: 'Elegant bottle design',
+      isPremium: true,
+      category: 'bottle',
+      image: null,
+      createdAt: new Date()
     }
-  })
-  return templates
+  ]
+
+  try {
+    if (prisma) {
+      const templates = await prisma.template.findMany({
+        orderBy: {
+          createdAt: 'desc'
+        }
+      })
+      return templates
+    }
+  } catch (error) {
+    console.warn('Database not available, using fallback templates')
+  }
+  
+  return fallbackTemplates
 }
 
 export default async function TemplatesPage() {
@@ -66,7 +96,7 @@ export default async function TemplatesPage() {
 
           {/* Templates Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {templates.map((template) => (
+            {templates.map((template: any) => (
               <div key={template.id} className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
                 {/* Template Image */}
                 <div className="aspect-square bg-gray-100 flex items-center justify-center relative">

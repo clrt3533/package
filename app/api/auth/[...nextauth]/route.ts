@@ -48,8 +48,8 @@ const handler = NextAuth({
   providers,
   callbacks: {
     session: async ({ session, token }) => {
-      if (session?.user) {
-        session.user.id = token.sub
+      if (session?.user && token.sub) {
+        (session.user as any).id = token.sub
       }
       return session
     },
@@ -65,7 +65,6 @@ const handler = NextAuth({
   },
   pages: {
     signIn: "/auth/signin",
-    signUp: "/auth/signup",
   },
   secret: process.env.NEXTAUTH_SECRET || "demo-secret-change-in-production-minimum-32-chars",
 })

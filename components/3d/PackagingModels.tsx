@@ -63,7 +63,7 @@ export function BagPackage({
   roughness = 0.8,
   autoRotate = false
 }: ModelProps) {
-  const meshRef = useRef<THREE.Mesh>(null)
+  const meshRef = useRef<THREE.Group>(null)
 
   useFrame((state) => {
     if (meshRef.current && autoRotate) {
@@ -114,7 +114,7 @@ export function BottlePackage({
   roughness = 0.1,
   autoRotate = false
 }: ModelProps) {
-  const meshRef = useRef<THREE.Mesh>(null)
+  const meshRef = useRef<THREE.Group>(null)
 
   useFrame((state) => {
     if (meshRef.current && autoRotate) {
@@ -217,7 +217,7 @@ export function PouchPackage({
   roughness = 0.9,
   autoRotate = false
 }: ModelProps) {
-  const meshRef = useRef<THREE.Mesh>(null)
+  const meshRef = useRef<THREE.Group>(null)
 
   useFrame((state) => {
     if (meshRef.current && autoRotate) {

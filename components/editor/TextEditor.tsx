@@ -44,9 +44,15 @@ function Text3D({ element, isSelected, onSelect, onUpdate }: Text3DProps) {
   useFrame(() => {
     if (textRef.current && isSelected) {
       // Add subtle glow effect for selected text
-      textRef.current.material.emissive.setHex(0x222222)
+      const material = textRef.current.material as any
+      if (material && material.emissive) {
+        material.emissive.setHex(0x222222)
+      }
     } else if (textRef.current) {
-      textRef.current.material.emissive.setHex(0x000000)
+      const material = textRef.current.material as any
+      if (material && material.emissive) {
+        material.emissive.setHex(0x000000)
+      }
     }
   })
 

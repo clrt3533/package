@@ -149,44 +149,44 @@ export default function TemplatesPage() {
               scale={0.8}
             />
           </Canvas3D>
+          {template.isPremium && (
+            <div className="absolute top-3 left-3">
+              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                <Crown className="h-3 w-3 mr-1" />
+                Premium
+              </span>
+            </div>
+          )}
+          <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
+            <button className="p-1.5 bg-white rounded-md shadow-sm">
+              <Eye className="h-4 w-4 text-slate-600" />
+            </button>
+          </div>
+          <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
+            <Link
+              href={`/dashboard/projects/new?template=${template.id}`}
+              className="w-full flex items-center justify-center px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors"
+            >
+              <Plus className="h-4 w-4 mr-1" />
+              Use Template
+            </Link>
+          </div>
         </div>
-        {template.isPremium && (
-          <div className="absolute top-3 left-3">
-            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-              <Crown className="h-3 w-3 mr-1" />
-              Premium
+        <div className="p-4">
+          <h3 className="text-sm font-semibold text-slate-900 mb-1">{template.name}</h3>
+          <p className="text-xs text-slate-500 mb-2">{template.description}</p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="flex items-center">
+                <Star className="h-3 w-3 text-yellow-400 fill-current" />
+                <span className="text-xs text-slate-600 ml-1">{template.rating}</span>
+              </div>
+              <span className="text-xs text-slate-500">{template.downloads} downloads</span>
+            </div>
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800">
+              {template.type}
             </span>
           </div>
-        )}
-        <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-          <button className="p-1.5 bg-white rounded-md shadow-sm">
-            <Eye className="h-4 w-4 text-slate-600" />
-          </button>
-        </div>
-        <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-          <Link
-            href={`/dashboard/projects/new?template=${template.id}`}
-            className="w-full flex items-center justify-center px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors"
-          >
-            <Plus className="h-4 w-4 mr-1" />
-            Use Template
-          </Link>
-        </div>
-      </div>
-      <div className="p-4">
-        <h3 className="text-sm font-semibold text-slate-900 mb-1">{template.name}</h3>
-        <p className="text-xs text-slate-500 mb-2">{template.description}</p>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="flex items-center">
-              <Star className="h-3 w-3 text-yellow-400 fill-current" />
-              <span className="text-xs text-slate-600 ml-1">{template.rating}</span>
-            </div>
-            <span className="text-xs text-slate-500">{template.downloads} downloads</span>
-          </div>
-          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800">
-            {template.type}
-          </span>
         </div>
       </div>
     )

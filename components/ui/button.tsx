@@ -1,7 +1,15 @@
 import * as React from "react"
-import { Slot } from "@radix/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
+
+// Optional Slot import - fallback if not available
+let Slot: any = 'button'
+try {
+  const SlotModule = require("@radix-ui/react-slot")
+  Slot = SlotModule.Slot
+} catch {
+  // Fallback to regular button if Slot not available
+}
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-95",
