@@ -1,5 +1,8 @@
 "use client"
 
+// Force dynamic rendering for authentication-protected pages
+export const dynamic = 'force-dynamic'
+
 import { useState } from "react"
 import Link from "next/link"
 import { DashboardLayout } from "@/components/dashboard/layout"

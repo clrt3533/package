@@ -1,13 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Force dynamic for pages with authentication
+  experimental: {
+    missingSuspenseWithCSRBailout: false,
+  },
+  
   images: {
-    domains: [
-      'localhost',
-      'vercel.app',
-      'avatars.githubusercontent.com',
-      'lh3.googleusercontent.com',
-      'images.unsplash.com'
-    ],
     remotePatterns: [
       {
         protocol: 'https',
@@ -15,18 +13,16 @@ const nextConfig = {
       },
     ],
   },
-  // Enable static exports for better performance
-  output: 'standalone',
   
-  // Optimize for Vercel deployment
+  // Webpack configuration for Three.js and GLSL shaders
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-    // Optimize Three.js bundle size
+    // Handle Three.js
     config.resolve.alias = {
       ...config.resolve.alias,
-      'three/examples/jsm': 'three/examples/jsm',
+      three: 'three',
     }
-    
-    // Handle WebGL and 3D libraries
+
+    // Handle GLSL shaders
     config.module.rules.push({
       test: /\.(glsl|vs|fs|vert|frag)$/,
       exclude: /node_modules/,
@@ -36,14 +32,26 @@ const nextConfig = {
       ]
     })
 
+    // Optimize for client-side builds
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        path: false,
+        os: false,
+      }
+    }
+
     return config
   },
 
-  // Performance optimizations
+  // Enable SWC minification
   swcMinify: true,
-  poweredByHeader: false,
   
-  // Environment-specific configurations
+  // Disable powered by header
+  poweredByHeader: false,
+
+  // Security headers
   async headers() {
     return [
       {
@@ -51,18 +59,18 @@ const nextConfig = {
         headers: [
           {
             key: 'X-Content-Type-Options',
-            value: 'nosniff'
+            value: 'nosniff',
           },
           {
             key: 'X-Frame-Options',
-            value: 'DENY'
+            value: 'DENY',
           },
           {
             key: 'X-XSS-Protection',
-            value: '1; mode=block'
-          }
-        ]
-      }
+            value: '1; mode=block',
+          },
+        ],
+      },
     ]
   },
 
@@ -78,9 +86,9 @@ const nextConfig = {
         source: '/dashboard',
         destination: '/dashboard/overview',
         permanent: false,
-      }
+      },
     ]
-  }
+  },
 }
 
 module.exports = nextConfig
